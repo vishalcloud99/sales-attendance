@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Team Attendance</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-dark: #0d2b5e;
+    --blue-mid: #1a56db;
+    --blue-light: #3b82f6;
+    --blue-pale: #dbeafe;
+    --green-dark: #065f46;
+    --green-mid: #059669;
+    --green-light: #10b981;
+    --green-pale: #d1fae5;
+    --white: #ffffff;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-800: #1e293b;
+    --red: #ef4444;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.1);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.12);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.18);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0d2b5e 0%, #1a56db 40%, #059669 100%);
+    min-height: 100vh;
+    padding: 20px 16px 40px;
+  }
+
+  /* HEADER */
+  .app-header {
+    text-align: center;
+    padding: 24px 0 20px;
+    color: white;
+  }
+  .app-header .logo-icon {
+    width: 60px; height: 60px;
+    background: rgba(255,255,255,.15);
+    border: 2px solid rgba(255,255,255,.3);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 12px;
+    backdrop-filter: blur(8px);
+  }
+  .app-header h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 22px; font-weight: 800;
+    letter-spacing: -.3px;
+    text-shadow: 0 2px 8px rgba(0,0,0,.2);
+  }
+  .app-header p {
+    font-size: 13px; opacity: .8; font-weight: 300;
+    margin-top: 4px;
+  }
+
+  /* TAB SWITCHER */
+  .tab-bar {
+    display: flex;
+    background: rgba(255,255,255,.15);
+    border-radius: 14px;
+    padding: 4px;
+    margin: 0 auto 20px;
+    max-width: 380px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 11px 8px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,.7);
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .25s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .tab-btn.active {
+    background: white;
+    color: var(--blue-dark);
+    box-shadow: var(--shadow-md);
+  }
+  .tab-btn.active.checkout { color: var(--green-dark); }
+
+  /* CARD */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .section-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px; font-weight: 700; letter-spacing: .5px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .badge-checkin { background: var(--blue-pale); color: var(--blue-dark); }
+  .badge-checkout { background: var(--green-pale); color: var(--green-dark); }
+
+  /* FORM */
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-size: 12px; font-weight: 600;
+    color: var(--gray-600);
+    margin-bottom: 6px;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+  }
+  .form-group label .req { color: var(--red); margin-left: 2px; }
+  .form-group label .auto-tag {
+    background: var(--blue-pale); color: var(--blue-mid);
+    font-size: 10px; padding: 1px 6px; border-radius: 6px;
+    margin-left: 6px; font-weight: 700; vertical-align: middle;
+  }
+  .form-group label .auto-tag.green {
+    background: var(--green-pale); color: var(--green-dark);
+  }
+
+  input[type=text], input[type=email], textarea, select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: var(--gray-800);
+    background: var(--gray-50);
+    transition: border .2s, box-shadow .2s;
+    outline: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--blue-light);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+    background: white;
+  }
+  .readonly-field {
+    padding: 11px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--gray-100);
+    font-size: 13px;
+    color: var(--gray-600);
+    display: flex; align-items: center; gap: 8px;
+    min-height: 44px;
+  }
+  .readonly-field .val { font-weight: 600; color: var(--gray-800); }
+
+  textarea { resize: vertical; min-height: 90px; }
+  select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+
+  /* CAMERA */
+  .camera-container {
+    border: 2px dashed var(--blue-light);
+    border-radius: var(--radius-sm);
+    background: var(--blue-pale);
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 4/3;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: border-color .2s;
+  }
+  .camera-container:hover { border-color: var(--blue-dark); }
+  .camera-container video, .camera-container canvas, .camera-container img {
+    width: 100%; height: 100%; object-fit: cover; display: none;
+  }
+  .camera-container video.active, .camera-container canvas.active, .camera-container img.active {
+    display: block;
+  }
+  .camera-placeholder {
+    text-align: center;
+    color: var(--blue-mid);
+    pointer-events: none;
+  }
+  .camera-placeholder .cam-icon { font-size: 40px; margin-bottom: 8px; display: block; }
+  .camera-placeholder p { font-size: 13px; font-weight: 600; }
+  .camera-placeholder small { font-size: 11px; opacity: .7; }
+  .camera-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 10px;
+    display: none; flex-direction: row; gap: 8px; justify-content: center;
+    background: linear-gradient(transparent, rgba(0,0,0,.5));
+  }
+  .camera-overlay.visible { display: flex; }
+  .cam-btn {
+    padding: 8px 18px;
+    border: none; border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px; font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s;
+  }
+  .cam-btn:active { transform: scale(.95); }
+  .cam-btn.capture { background: white; color: var(--blue-dark); }
+  .cam-btn.retake { background: rgba(255,255,255,.2); color: white; border: 1px solid rgba(255,255,255,.4); }
+  .selfie-captured {
+    position: absolute; top: 10px; right: 10px;
+    background: var(--green-light); color: white;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 700;
+    display: none;
+  }
+  .selfie-captured.show { display: block; }
+
+  /* LOCATION */
+  .location-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--gray-50);
+    font-size: 13px;
+  }
+  .location-bar .loc-icon { font-size: 18px; flex-shrink: 0; }
+  .location-bar .loc-text { flex: 1; color: var(--gray-400); font-style: italic; }
+  .location-bar .loc-text.found { color: var(--gray-800); font-style: normal; font-weight: 500; }
+  .location-bar .loc-spinner {
+    width: 16px; height: 16px;
+    border: 2px solid var(--gray-200);
+    border-top-color: var(--blue-light);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    display: none;
+  }
+  .location-bar .loc-spinner.active { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--gray-100); margin: 20px 0; }
+
+  /* SUBMIT BTN */
+  .submit-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px; font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .submit-btn.checkin {
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+    color: white;
+    box-shadow: 0 4px 20px rgba(26,86,219,.4);
+  }
+  .submit-btn.checkout {
+    background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+    color: white;
+    box-shadow: 0 4px 20px rgba(5,150,105,.4);
+  }
+  .submit-btn:hover { transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+  .btn-loader {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    display: none;
+  }
+  .btn-loader.active { display: block; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+  }
+  .modal-overlay.show { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: white;
+    border-radius: 20px;
+    padding: 30px 24px;
+    max-width: 360px;
+    width: 100%;
+    transform: scale(.9) translateY(20px);
+    transition: transform .3s;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  }
+  .modal-overlay.show .modal-box { transform: scale(1) translateY(0); }
+  .modal-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 16px;
+  }
+  .modal-icon.checkin { background: var(--blue-pale); }
+  .modal-icon.checkout { background: var(--green-pale); }
+  .modal-box h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px; font-weight: 800;
+    color: var(--gray-800); margin-bottom: 8px;
+  }
+  .modal-box .modal-subtitle { font-size: 13px; color: var(--gray-400); margin-bottom: 20px; }
+  .modal-detail {
+    background: var(--gray-50);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  .modal-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; }
+  .modal-row .label { color: var(--gray-400); font-weight: 500; }
+  .modal-row .value { color: var(--gray-800); font-weight: 600; max-width: 200px; text-align: right; }
+  .modal-close {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    color: white;
+    transition: all .2s;
+  }
+  .modal-close.checkin { background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid)); }
+  .modal-close.checkout { background: linear-gradient(135deg, var(--green-dark), var(--green-mid)); }
+
+  /* IP LOCK NOTICE */
+  .ip-lock-notice {
+    display: flex; align-items: center; gap: 8px;
+    background: #fef3c7; border: 1px solid #fbbf24;
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 12px; color: #92400e; font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .ip-lock-notice span { font-size: 16px; }
+
+  /* ERROR */
+  .error-msg {
+    display: none;
+    background: #fef2f2; border: 1px solid #fca5a5;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px; color: #b91c1c;
+    margin-top: 16px;
+  }
+  .error-msg.show { display: block; }
+
+  /* STATUS BAR */
+  .status-bar {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--gray-400);
+    margin-top: 16px; justify-content: center;
+  }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .status-dot.green { background: var(--green-light); }
+  .status-dot.gray { background: var(--gray-200); }
+
+  /* SECTION HIDDEN */
+  .form-section { display: none; }
+  .form-section.active { display: block; }
+
+  /* GOOGLE SCRIPT INFO */
+  .setup-info {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--blue-mid);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--gray-600);
+    line-height: 1.7;
+  }
+  .setup-info strong { color: var(--blue-dark); display: block; margin-bottom: 4px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="logo-icon">📍</div>
+  <h1>Sales Team Attendance</h1>
+  <p>Field Visit Tracking System</p>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" id="tabCheckin" onclick="switchTab('checkin')">
+    🟢 Check-In
+  </button>
+  <button class="tab-btn checkout" id="tabCheckout" onclick="switchTab('checkout')">
+    🔴 Check-Out
+  </button>
+</div>
+
+<!-- MAIN CARD -->
+<div class="card">
+
+  <!-- ===== CHECK-IN SECTION ===== -->
+  <div class="form-section active" id="sectionCheckin">
+    <div class="section-badge badge-checkin">🟢 Check-In</div>
+
+    <div class="ip-lock-notice">
+      <span>🔒</span>
+      Your IP is verified before access. Each check-in is locked to your device IP.
+    </div>
+
+    <!-- Date -->
+    <div class="form-group">
+      <label>Date <span class="auto-tag">AUTO</span></label>
+      <div class="readonly-field">📅 <span class="val" id="displayDate">—</span></div>
+    </div>
+
+    <!-- Employee Name -->
+    <div class="form-group">
+      <label>Employee Name <span class="req">*</span></label>
+      <input type="text" id="empName" placeholder="Enter your full name" />
+    </div>
+
+    <!-- Check-in Timestamp -->
+    <div class="form-group">
+      <label>Check-In Time <span class="auto-tag">AUTO</span></label>
+      <div class="readonly-field">🕐 <span class="val" id="checkinTime">—</span></div>
+    </div>
+
+    <!-- GPS Location -->
+    <div class="form-group">
+      <label>Location <span class="auto-tag">AUTO · GPS</span></label>
+      <div class="location-bar" id="checkinLocBar">
+        <span class="loc-icon">📍</span>
+        <span class="loc-text" id="checkinLocText">Tap to capture location…</span>
+        <div class="loc-spinner" id="checkinLocSpinner"></div>
+      </div>
+      <input type="hidden" id="checkinLat" />
+      <input type="hidden" id="checkinLng" />
+    </div>
+
+    <!-- Selfie -->
+    <div class="form-group">
+      <label>Live Selfie <span class="req">*</span> <span class="auto-tag">CAMERA ONLY</span></label>
+      <div class="camera-container" id="cameraContainer" onclick="startCamera()">
+        <video id="cameraVideo" autoplay playsinline></video>
+        <canvas id="cameraCanvas"></canvas>
+        <img id="capturedImg" alt="Selfie" />
+        <div class="camera-placeholder" id="cameraPlaceholder">
+          <span class="cam-icon">📸</span>
+          <p>Tap to Open Camera</p>
+          <small>Front camera · Live only</small>
+        </div>
+        <div class="camera-overlay" id="cameraOverlay">
+          <button class="cam-btn capture" onclick="captureSelfie(event)">📸 Capture</button>
+          <button class="cam-btn retake" onclick="retakePhoto(event)">🔄 Retake</button>
+        </div>
+        <div class="selfie-captured" id="selfieCapture">✔ Captured</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Company -->
+    <div class="form-group">
+      <label>Company <span class="req">*</span></label>
+      <input type="text" id="company" placeholder="Client company name" />
+    </div>
+
+    <!-- Contact Person -->
+    <div class="form-group">
+      <label>Contact Person</label>
+      <input type="text" id="contactPerson" placeholder="Contact name at company" />
+    </div>
+
+    <!-- Address -->
+    <div class="form-group">
+      <label>Address / Visit Location <span class="req">*</span></label>
+      <input type="text" id="visitAddress" placeholder="Full address of visit" />
+    </div>
+
+    <!-- IP Address -->
+    <div class="form-group">
+      <label>IP Address <span class="auto-tag green">AUTO · LOCKED</span></label>
+      <div class="readonly-field">🌐 <span class="val" id="displayIP">Fetching…</span></div>
+      <input type="hidden" id="ipAddress" />
+    </div>
+
+    <div class="error-msg" id="checkinError"></div>
+
+    <button class="submit-btn checkin" id="checkinBtn" onclick="submitCheckin()">
+      <span id="checkinBtnText">🟢 Submit Check-In</span>
+      <div class="btn-loader" id="checkinLoader"></div>
+    </button>
+
+    <div class="status-bar">
+      <div class="status-dot" id="statusCamera"></div> Camera
+      &nbsp;|&nbsp;
+      <div class="status-dot" id="statusLoc"></div> Location
+      &nbsp;|&nbsp;
+      <div class="status-dot" id="statusIP"></div> IP
+    </div>
+  </div>
+
+  <!-- ===== CHECK-OUT SECTION ===== -->
+  <div class="form-section" id="sectionCheckout">
+    <div class="section-badge badge-checkout">🔴 Check-Out</div>
+
+    <!-- IP Verification Notice -->
+    <div class="ip-lock-notice" style="background:#dbeafe;border-color:#93c5fd;color:#1e40af;">
+      <span>🔐</span>
+      Only the employee who checked-in from this IP can check-out.
+    </div>
+
+    <!-- Select Company (from check-in) -->
+    <div class="form-group">
+      <label>Select Company <span class="req">*</span></label>
+      <select id="coCheckout">
+        <option value="">— Select Company —</option>
+      </select>
+      <small style="font-size:11px;color:var(--gray-400);margin-top:4px;display:block;">Lists companies checked-in from your IP today</small>
+    </div>
+
+    <!-- Notes -->
+    <div class="form-group">
+      <label>Visit Notes</label>
+      <textarea id="visitNotes" placeholder="Summary of the visit, discussion points, next steps…"></textarea>
+    </div>
+
+    <!-- Check-out Timestamp -->
+    <div class="form-group">
+      <label>Check-Out Time <span class="auto-tag green">AUTO</span></label>
+      <div class="readonly-field">🕐 <span class="val" id="checkoutTime">—</span></div>
+    </div>
+
+    <!-- GPS Location -->
+    <div class="form-group">
+      <label>Check-Out Location <span class="auto-tag green">AUTO · GPS</span></label>
+      <div class="location-bar" id="checkoutLocBar">
+        <span class="loc-icon">📍</span>
+        <span class="loc-text" id="checkoutLocText">Capturing location…</span>
+        <div class="loc-spinner" id="checkoutLocSpinner"></div>
+      </div>
+      <input type="hidden" id="checkoutLat" />
+      <input type="hidden" id="checkoutLng" />
+    </div>
+
+    <div class="error-msg" id="checkoutError"></div>
+
+    <button class="submit-btn checkout" id="checkoutBtn" onclick="submitCheckout()">
+      <span id="checkoutBtnText">🔴 Submit Check-Out</span>
+      <div class="btn-loader" id="checkoutLoader"></div>
+    </button>
+  </div>
+
+  <!-- GOOGLE SCRIPT SETUP INFO -->
+  <div class="setup-info" id="setupInfo">
+    <strong>⚙️ Google Sheets Integration Setup</strong>
+    1. Open Google Sheets → Extensions → Apps Script<br>
+    2. Paste the backend code (see <code>apps_script_backend.gs</code>)<br>
+    3. Deploy → New Deployment → Web App → "Anyone"<br>
+    4. Copy the deployment URL and set <code>SCRIPT_URL</code> in this file's JS<br>
+    5. Share the Google Drive folder with service account if needed
+  </div>
+</div>
+
+<!-- CONFIRMATION MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-icon" id="modalIcon">✅</div>
+    <h2 id="modalTitle">Check-In Successful!</h2>
+    <p class="modal-subtitle" id="modalSubtitle">Your attendance has been recorded.</p>
+    <div class="modal-detail" id="modalDetail"></div>
+    <button class="modal-close" id="modalCloseBtn" onclick="closeModal()">Done ✓</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// CONFIGURATION — Set your deployed Apps Script URL here
+// ══════════════════════════════════════
+const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+// ══════════════════════════════════════
+
+let currentIP = '';
+let checkinLocationName = '';
+let checkoutLocationName = '';
+let selfieBlob = null;
+let stream = null;
+let cameraActive = false;
+let photoCaptured = false;
+
+// ─── INIT ───────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  updateClocks();
+  setInterval(updateClocks, 1000);
+  fetchIP();
+  getLocation('checkin');
+});
+
+function updateClocks() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  const timeStr = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  document.getElementById('displayDate').textContent = dateStr;
+  document.getElementById('checkinTime').textContent = timeStr;
+  document.getElementById('checkoutTime').textContent = timeStr;
+}
+
+// ─── TAB SWITCH ─────────────────────
+function switchTab(tab) {
+  const isCheckin = tab === 'checkin';
+  document.getElementById('tabCheckin').classList.toggle('active', isCheckin);
+  document.getElementById('tabCheckout').classList.toggle('active', !isCheckin);
+  document.getElementById('sectionCheckin').classList.toggle('active', isCheckin);
+  document.getElementById('sectionCheckout').classList.toggle('active', !isCheckin);
+
+  if (!isCheckin) {
+    getLocation('checkout');
+    loadCheckoutCompanies();
+  }
+}
+
+// ─── FETCH IP ────────────────────────
+async function fetchIP() {
+  try {
+    const r = await fetch('https://api.ipify.org?format=json');
+    const d = await r.json();
+    currentIP = d.ip;
+    document.getElementById('displayIP').textContent = currentIP;
+    document.getElementById('ipAddress').value = currentIP;
+    document.getElementById('statusIP').classList.add('green');
+    document.getElementById('statusIP').classList.remove('gray');
+  } catch(e) {
+    document.getElementById('displayIP').textContent = 'Unable to fetch';
+  }
+}
+
+// ─── GEOLOCATION + REVERSE GEOCODE ──
+function getLocation(type) {
+  const spinner = document.getElementById(type === 'checkin' ? 'checkinLocSpinner' : 'checkoutLocSpinner');
+  const txt = document.getElementById(type === 'checkin' ? 'checkinLocText' : 'checkoutLocText');
+  spinner.classList.add('active');
+  txt.textContent = 'Getting your location…';
+  txt.classList.remove('found');
+
+  if (!navigator.geolocation) {
+    txt.textContent = 'Geolocation not supported';
+    spinner.classList.remove('active');
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async (pos) => {
+      const lat = pos.coords.latitude.toFixed(6);
+      const lng = pos.coords.longitude.toFixed(6);
+
+      if (type === 'checkin') {
+        document.getElementById('checkinLat').value = lat;
+        document.getElementById('checkinLng').value = lng;
+      } else {
+        document.getElementById('checkoutLat').value = lat;
+        document.getElementById('checkoutLng').value = lng;
+      }
+
+      // Reverse geocode
+      try {
+        const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=17`);
+        const data = await resp.json();
+        const addr = data.address;
+        const parts = [
+          addr.road || addr.pedestrian || addr.footway,
+          addr.neighbourhood || addr.suburb,
+          addr.city || addr.town || addr.village,
+          addr.state
+        ].filter(Boolean);
+        const locName = parts.slice(0, 3).join(', ') || data.display_name?.split(',').slice(0,3).join(',') || `${lat}, ${lng}`;
+
+        if (type === 'checkin') checkinLocationName = locName;
+        else checkoutLocationName = locName;
+
+        txt.textContent = '📍 ' + locName;
+        txt.classList.add('found');
+
+        if (type === 'checkin') {
+          document.getElementById('statusLoc').classList.add('green');
+          document.getElementById('statusLoc').classList.remove('gray');
+        }
+      } catch(e) {
+        txt.textContent = `${lat}, ${lng}`;
+        txt.classList.add('found');
+      }
+      spinner.classList.remove('active');
+    },
+    (err) => {
+      spinner.classList.remove('active');
+      let msg = 'Location denied. ';
+      if (err.code === 1) msg += 'Please allow location in browser settings.';
+      txt.textContent = msg;
+    },
+    { enableHighAccuracy: true, timeout: 15000 }
+  );
+}
+
+// ─── CAMERA ─────────────────────────
+async function startCamera() {
+  if (cameraActive || photoCaptured) return;
+  const placeholder = document.getElementById('cameraPlaceholder');
+  const video = document.getElementById('cameraVideo');
+  const overlay = document.getElementById('cameraOverlay');
+
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 640, height: 480 } });
+    video.srcObject = stream;
+    video.classList.add('active');
+    placeholder.style.display = 'none';
+    overlay.classList.add('visible');
+    cameraActive = true;
+    document.getElementById('statusCamera').classList.add('green');
+    document.getElementById('statusCamera').classList.remove('gray');
+  } catch(e) {
+    alert('Camera access denied. Please allow camera permission and try again.');
+  }
+}
+
+function captureSelfie(e) {
+  e.stopPropagation();
+  const video = document.getElementById('cameraVideo');
+  const canvas = document.getElementById('cameraCanvas');
+  const img = document.getElementById('capturedImg');
+
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 480;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0);
+
+  canvas.toBlob((blob) => {
+    selfieBlob = blob;
+    img.src = canvas.toDataURL('image/jpeg', 0.7);
+    img.classList.add('active');
+    video.classList.remove('active');
+    canvas.classList.remove('active');
+
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    cameraActive = false;
+    photoCaptured = true;
+
+    document.getElementById('selfieCapture').classList.add('show');
+    document.getElementById('cameraOverlay').innerHTML = `
+      <button class="cam-btn retake" onclick="retakePhoto(event)">🔄 Retake</button>
+    `;
+  }, 'image/jpeg', 0.7);
+}
+
+function retakePhoto(e) {
+  e.stopPropagation();
+  photoCaptured = false;
+  selfieBlob = null;
+  const img = document.getElementById('capturedImg');
+  img.classList.remove('active');
+  img.src = '';
+  document.getElementById('selfieCapture').classList.remove('show');
+  document.getElementById('cameraOverlay').innerHTML = `
+    <button class="cam-btn capture" onclick="captureSelfie(event)">📸 Capture</button>
+    <button class="cam-btn retake" onclick="retakePhoto(event)">🔄 Retake</button>
+  `;
+  document.getElementById('cameraOverlay').classList.remove('visible');
+  document.getElementById('cameraPlaceholder').style.display = '';
+  cameraActive = false;
+  startCamera();
+}
+
+// ─── LOAD CHECKOUT COMPANIES ─────────
+async function loadCheckoutCompanies() {
+  const sel = document.getElementById('coCheckout');
+  sel.innerHTML = '<option value="">Loading…</option>';
+
+  if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    // Demo mode
+    sel.innerHTML = '<option value="">— Select Company —</option><option>Demo Company (Check-in not submitted yet)</option>';
+    return;
+  }
+
+  try {
+    const resp = await fetch(`${SCRIPT_URL}?action=getCheckins&ip=${encodeURIComponent(currentIP)}`);
+    const data = await resp.json();
+    sel.innerHTML = '<option value="">— Select Company —</option>';
+    (data.companies || []).forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.rowId;
+      opt.textContent = `${c.company} (${c.time})`;
+      sel.appendChild(opt);
+    });
+  } catch(e) {
+    sel.innerHTML = '<option value="">— Error loading, try again —</option>';
+  }
+}
+
+// ─── SUBMIT CHECK-IN ─────────────────
+async function submitCheckin() {
+  const error = document.getElementById('checkinError');
+  error.classList.remove('show');
+
+  const empName = document.getElementById('empName').value.trim();
+  const company = document.getElementById('company').value.trim();
+  const address = document.getElementById('visitAddress').value.trim();
+  const lat = document.getElementById('checkinLat').value;
+  const lng = document.getElementById('checkinLng').value;
+
+  if (!empName) { showError('checkinError', 'Please enter Employee Name.'); return; }
+  if (!company) { showError('checkinError', 'Please enter Company name.'); return; }
+  if (!address) { showError('checkinError', 'Please enter Visit Address.'); return; }
+  if (!selfieBlob) { showError('checkinError', 'Please capture your selfie.'); return; }
+  if (!lat) { showError('checkinError', 'Location not captured yet. Please wait.'); return; }
+
+  setLoading('checkin', true);
+
+  const now = new Date();
+  const timestamp = now.toLocaleString('en-IN');
+  const fileName = `${empName.replace(/\s+/g,'_')}_${formatDate(now)}_${formatTime(now)}.jpg`;
+
+  try {
+    if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+      // DEMO MODE (no backend)
+      await new Promise(r => setTimeout(r, 1500));
+      setLoading('checkin', false);
+      showModal('checkin', {
+        'Employee': empName,
+        'Company': company,
+        'Check-In Time': timestamp,
+        'Location': checkinLocationName || `${lat}, ${lng}`,
+        'Address': address,
+        'IP Address': currentIP,
+        'Selfie': '📸 ' + fileName,
+        'Contact': document.getElementById('contactPerson').value || '—'
+      });
+      return;
+    }
+
+    // Convert selfie to base64
+    const base64 = await blobToBase64(selfieBlob);
+
+    const payload = {
+      action: 'checkin',
+      empName, company,
+      contactPerson: document.getElementById('contactPerson').value,
+      address,
+      checkinTime: timestamp,
+      lat, lng,
+      locationName: checkinLocationName,
+      ip: currentIP,
+      selfieBase64: base64,
+      selfieFileName: fileName
+    };
+
+    const resp = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    const result = await resp.json();
+
+    if (result.success) {
+      setLoading('checkin', false);
+      showModal('checkin', {
+        'Employee': empName,
+        'Company': company,
+        'Check-In Time': timestamp,
+        'Location': checkinLocationName,
+        'IP Address': currentIP,
+        'Selfie Saved': '✅ ' + fileName
+      });
+    } else {
+      throw new Error(result.error || 'Server error');
+    }
+  } catch(e) {
+    setLoading('checkin', false);
+    showError('checkinError', 'Submission failed: ' + e.message);
+  }
+}
+
+// ─── SUBMIT CHECK-OUT ────────────────
+async function submitCheckout() {
+  const error = document.getElementById('checkoutError');
+  error.classList.remove('show');
+
+  const coSelect = document.getElementById('coCheckout').value;
+  const coName = document.getElementById('coCheckout').selectedOptions[0]?.textContent || '';
+  const lat = document.getElementById('checkoutLat').value;
+  const lng = document.getElementById('checkoutLng').value;
+
+  if (!coSelect) { showError('checkoutError', 'Please select a company.'); return; }
+  if (!lat) { showError('checkoutError', 'Location not captured. Please wait.'); return; }
+
+  setLoading('checkout', true);
+
+  const now = new Date();
+  const timestamp = now.toLocaleString('en-IN');
+
+  try {
+    if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+      await new Promise(r => setTimeout(r, 1500));
+      setLoading('checkout', false);
+      showModal('checkout', {
+        'Company': coName.split(' (')[0],
+        'Check-Out Time': timestamp,
+        'Location': checkoutLocationName || `${lat}, ${lng}`,
+        'Notes': document.getElementById('visitNotes').value || '—'
+      });
+      return;
+    }
+
+    const payload = {
+      action: 'checkout',
+      rowId: coSelect,
+      checkoutTime: timestamp,
+      lat, lng,
+      locationName: checkoutLocationName,
+      notes: document.getElementById('visitNotes').value,
+      ip: currentIP
+    };
+
+    const resp = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    const result = await resp.json();
+
+    if (result.success) {
+      setLoading('checkout', false);
+      showModal('checkout', {
+        'Company': result.company || coName.split(' (')[0],
+        'Check-In Time': result.checkinTime || '—',
+        'Check-Out Time': timestamp,
+        'Location': checkoutLocationName,
+        'Notes': document.getElementById('visitNotes').value || '—'
+      });
+    } else {
+      throw new Error(result.error || 'IP mismatch — you can only check-out your own check-in');
+    }
+  } catch(e) {
+    setLoading('checkout', false);
+    showError('checkoutError', e.message);
+  }
+}
+
+// ─── HELPERS ─────────────────────────
+function showError(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = '⚠️ ' + msg;
+  el.classList.add('show');
+}
+
+function setLoading(type, loading) {
+  const btn = document.getElementById(type + 'Btn');
+  const txt = document.getElementById(type + 'BtnText');
+  const loader = document.getElementById(type + 'Loader');
+  btn.disabled = loading;
+  txt.style.display = loading ? 'none' : '';
+  loader.classList.toggle('active', loading);
+}
+
+function formatDate(d) {
+  return `${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()}`;
+}
+function formatTime(d) {
+  return `${d.getHours().toString().padStart(2,'0')}${d.getMinutes().toString().padStart(2,'0')}`;
+}
+
+function blobToBase64(blob) {
+  return new Promise((res) => {
+    const reader = new FileReader();
+    reader.onload = () => res(reader.result.split(',')[1]);
+    reader.readAsDataURL(blob);
+  });
+}
+
+function showModal(type, details) {
+  const overlay = document.getElementById('confirmModal');
+  const icon = document.getElementById('modalIcon');
+  const title = document.getElementById('modalTitle');
+  const subtitle = document.getElementById('modalSubtitle');
+  const detail = document.getElementById('modalDetail');
+  const closeBtn = document.getElementById('modalCloseBtn');
+
+  icon.className = 'modal-icon ' + type;
+  icon.textContent = type === 'checkin' ? '✅' : '🎉';
+  title.textContent = type === 'checkin' ? 'Check-In Successful!' : 'Check-Out Recorded!';
+  subtitle.textContent = type === 'checkin'
+    ? 'Your visit has been logged and photo saved.'
+    : 'Your visit has been completed and recorded.';
+  closeBtn.className = 'modal-close ' + type;
+
+  detail.innerHTML = Object.entries(details).map(([k, v]) =>
+    `<div class="modal-row"><span class="label">${k}</span><span class="value">${v}</span></div>`
+  ).join('');
+
+  overlay.classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('confirmModal').classList.remove('show');
+}
+
+// Init status dots
+document.querySelectorAll('.status-dot').forEach(d => d.classList.add('gray'));
+</script>
+
+</body>
+</html>
