@@ -387,19 +387,7 @@
   .form-section { display: none; }
   .form-section.active { display: block; }
 
-  /* GOOGLE SCRIPT INFO */
-  .setup-info {
-    background: var(--gray-50);
-    border: 1px solid var(--gray-200);
-    border-left: 4px solid var(--blue-mid);
-    border-radius: var(--radius-sm);
-    padding: 14px;
-    margin-top: 20px;
-    font-size: 12px;
-    color: var(--gray-600);
-    line-height: 1.7;
-  }
-  .setup-info strong { color: var(--blue-dark); display: block; margin-bottom: 4px; font-size: 13px; }
+
 </style>
 </head>
 <body>
@@ -577,15 +565,7 @@
     </button>
   </div>
 
-  <!-- GOOGLE SCRIPT SETUP INFO -->
-  <div class="setup-info" id="setupInfo">
-    <strong>⚙️ Google Sheets Integration Setup</strong>
-    1. Open Google Sheets → Extensions → Apps Script<br>
-    2. Paste the backend code (see <code>apps_script_backend.gs</code>)<br>
-    3. Deploy → New Deployment → Web App → "Anyone"<br>
-    4. Copy the deployment URL and set <code>SCRIPT_URL</code> in this file's JS<br>
-    5. Share the Google Drive folder with service account if needed
-  </div>
+
 </div>
 
 <!-- CONFIRMATION MODAL -->
@@ -603,7 +583,7 @@
 // ══════════════════════════════════════
 // CONFIGURATION — Set your deployed Apps Script URL here
 // ══════════════════════════════════════
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwjvcu1GB_hluoiILqceLRp4AQVh9ltWm4VYdquUBVOGjRWA8yoTh9PcNJGt6EcPbA3/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/library/d/17tzqV721gqMpZRSRQNZENnCAv3ugEohoVoFl0Uf261pyXwZ-lT8MZlPm/1';
 // ══════════════════════════════════════
 
 let currentIP = '';
